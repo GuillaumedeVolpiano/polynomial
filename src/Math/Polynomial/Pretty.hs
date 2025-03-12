@@ -17,6 +17,7 @@ import Data.Complex
 
 import Text.PrettyPrint
 import Text.PrettyPrint.HughesPJClass
+import qualified Text.PrettyPrint.HughesPJClass as T ((<>))
 
 instance (Pretty a, Num a, Ord a) => Pretty (Poly a) where
     pPrintPrec l p x = ppr
@@ -50,11 +51,11 @@ parenSep p xs =
         (hsep xs)
 
 pPrintOrdTerm   _ _ _ 0 _ = empty
-pPrintOrdTerm num _ f c 0 = sign f c <> num (abs c)
-pPrintOrdTerm   _ v f c 1   | abs c == 1    = sign f c <> char v
-pPrintOrdTerm num v f c 1 = sign f c <> num (abs c) <> char v
-pPrintOrdTerm   _ v f c e   | abs c == 1    = sign f c <> char v <> text "^" <> int e
-pPrintOrdTerm num v f c e = sign f c <> num (abs c) <> char v <> text "^" <> int e
+pPrintOrdTerm num _ f c 0 = sign f c T.<> num (abs c)
+pPrintOrdTerm   _ v f c 1   | abs c == 1    = sign f c T.<> char v
+pPrintOrdTerm num v f c 1 = sign f c T.<> num (abs c) T.<> char v
+pPrintOrdTerm   _ v f c e   | abs c == 1    = sign f c T.<> char v T.<> text "^" T.<> int e
+pPrintOrdTerm num v f c e = sign f c T.<> num (abs c) T.<> char v T.<> text "^" T.<> int e
 
 sign True x
     | x < 0     = char '-'
@@ -64,9 +65,9 @@ sign False x
     | otherwise = text "+ "
 
 pPrintUnOrdTerm   _ _ _ 0 _ = empty
-pPrintUnOrdTerm num _ f c 0 = sign f 1 <> num c
-pPrintUnOrdTerm   _ v f 1 1 = sign f 1 <> char v
-pPrintUnOrdTerm num v f c 1 = sign f 1 <> num c <> char v
-pPrintUnOrdTerm   _ v f 1 e = sign f 1 <> char v <> text "^" <> int e
-pPrintUnOrdTerm num v f c e = sign f 1 <> num c <> char v <> text "^" <> int e
+pPrintUnOrdTerm num _ f c 0 = sign f 1 T.<> num c
+pPrintUnOrdTerm   _ v f 1 1 = sign f 1 T.<> char v
+pPrintUnOrdTerm num v f c 1 = sign f 1 T.<> num c T.<> char v
+pPrintUnOrdTerm   _ v f 1 e = sign f 1 T.<> char v T.<> text "^" T.<> int e
+pPrintUnOrdTerm num v f c e = sign f 1 T.<> num c T.<> char v T.<> text "^" T.<> int e
 
